@@ -1,0 +1,57 @@
+/* Stylesheet by Jacob P. Hrubecky, 2017 */
+body{
+  margin: 30;
+}
+
+#mydiv{
+
+}
+#mapid{
+    float: left;
+    height: 99vh;
+    width: 78%;
+    display: inline-block;
+    padding-bottom: 0px;
+}
+
+#panel2{
+    float: right;
+    height: 15vh;
+    width: 20%;
+    padding: 10px;
+    display: inline-block;
+    vertical-align: top;
+    background-color: crimson;
+}
+
+#panel{
+    float: right;
+    height: 80vh;
+    width: 20%;
+    padding: 10px;
+    padding-bottom: 0px;
+    display: inline-block;
+    vertical-align:baseline;
+    background-color: aqua;
+    font: Helvetica;
+}
+
+.range-slider {
+    width: 50%;
+}
+
+#forward {
+    float: right;
+}
+
+#reverse {
+    float: left;
+}
+
+.mydivclass{
+
+}
+
+.leaflet-popup-content p {
+    margin: 0px 0;
+}
