@@ -23,6 +23,7 @@ function getCountryPopData(mymap){
             
             createSequenceControls(mymap, attributes);
             createPropSymbols(response, mymap);
+            createLegend(mymap, attributes);
 
         }
     });
@@ -85,6 +86,7 @@ function updatePropSymbols(map, attribute){
             layer.setRadius(radius);
         };
     });
+    updateLegend(map, attribute);
 };
 
 function createPropSymbols(response, mymap){
@@ -256,13 +258,65 @@ function createLegend(map, attributes){
             // create the control container with a particular class name
             var container = L.DomUtil.create('div', 'legend-control-container');
 
-            //PUT YOUR SCRIPT TO CREATE THE TEMPORAL LEGEND HERE
+            //add temporal legend div to container
+            //$(container).append('<div id="temporal-legend">')
 
-            return container;
+            //Step 1: start attribute legend svg string
+            var svg = '<svg id="attribute-legend" width="180px" height="180px">';
+
+            //add attribute legend svg to container
+            $('#Legend').append(svg);
+            
+            //$('#Legend').append('<div id="temporal-legend">')
+
+            var svg = '<svg id="attribute-legend" width="180px" height="200px">';
+
+            var circles = {
+                max: 20,
+                mean: 40,
+                min: 60
+            };
+            
+            circles.style = {
+                fillColor: "#ff7800",
+                color: "#000",
+                weight: 1,
+                opacity: 1,
+                fillOpacity: 0.8
+            }
+
+            for (var i=0; i<circles.length; i++){
+                //circle string
+                svg += '<circle class="legend-circle" id="' + circle + '" fill="#75A8B0" fill-opacity="0.8" stroke="#000000" cx="50"/>';
+
+                //text string
+                svg += '<text id="' + circle + '-text" x="100" y="' + circles[circle] + '"></text>';
+            };
+
+            //close svg string
+            svg += "</svg>";
+
+            //add attribute legend svg to container
+            $('#Legend').append(svg);
+
+
+            return '#Legend';
         }
     });
 
     map.addControl(new LegendControl());
+};
+
+function updateLegend(map, attribute){
+    //create content for legend
+    var year = attribute.split("_")[1];
+    var content = "Population in " + year;
+
+    //replace legend content
+    $('#temporal-legend').html(content);
+
+    //get the max, mean, and min values as an object
+    var circleValues = getCircleValues(map, attribute);
 };
 
 //window.onload = initialize();
