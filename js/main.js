@@ -1,12 +1,13 @@
 /* Stylesheet by Jacob P. Hrubecky, 2017 */
 var mydiv = document.getElementById("mydiv");
-var mymap = L.map('mapid').setView([0, 0], 1);
+var mymap = L.map('mapid').setView([0, 0], 3);
 
 //tile layer
-var OpenStreetMap_HOT = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
+L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamhydWJlY2t5IiwiYSI6ImNpcnBjemI3NjBmcWhmZ204cTJhcmlkZ28ifQ.shqnrtmNMVCAKQ8ldaFVhg', {
+    maxZoom: 10,
     }).addTo(mymap);
+
+$('#panel').append('<p><h><b>Annual Populations (Millions)</b></h></p>');
 
 function initialize(){
     getCountryPopData(mymap);
@@ -29,7 +30,9 @@ function getCountryPopData(mymap){
 
 function createSequenceControls(mymap, attributes){
     //create range input element (slider)
+    $("#panel2").append("<h3>Worldwide Populations: 1980-2010</h3><p><i>Observing international population growth from 1980 to 2010.</i></p><p><b>View Population Growth</b></p>");
     $('#panel2').append('<input class="range-slider" type="range">');
+
     //set slider attributes
     $('.range-slider').attr({
         max: 30,
@@ -41,18 +44,33 @@ function createSequenceControls(mymap, attributes){
     $('#panel2').append('<button class="skip" id="forward">Skip</button>');
     $('#reverse').html('<img src="img/reverse.png">');
     $('#forward').html('<img src="img/forward.png">');
+    $('#panel2').append('<b><p>1980---------2010</p></b>');
     
     //Step 5: click listener for buttons
     $('.skip').click(function(){
         //get the old index value
         var index = $('.range-slider').val();
+
+        //Step 6: increment or decrement depending on button clicked
+        if ($(this).attr('id') == 'forward'){
+            index++;
+            //Step 7: if past the last attribute, wrap around to first attribute
+            index = index > 29 ? 0 : index;
+        } else if ($(this).attr('id') == 'reverse'){
+            index--;
+            //Step 7: if past the first attribute, wrap around to last attribute
+            index = index < 0 ? 29 : index;
+        };
+        //Step 8: update slider
+        $('.range-slider').val(index);
+        updatePropSymbols(mymap, attributes[index]);
     });
 
     //Step 5: input listener for slider
     $('.range-slider').on('input', function(){
         var index = $(this).val();
         updatePropSymbols(mymap, attributes[index]);
-    });    
+    });
 };
 
 //Resize proportional symbols according to new attribute values
@@ -71,7 +89,7 @@ function updatePropSymbols(map, attribute){
 
 function createPropSymbols(response, mymap){
     
-    var attribute = "2010";
+    var attribute = "1980";
     
     var geojsonMarkerOptions = {
         radius: 8,
@@ -82,7 +100,7 @@ function createPropSymbols(response, mymap){
         fillOpacity: 0.8
     };
     
-    L.geoJSON(response, {
+    var layer = L.geoJSON(response, {
         onEachFeature: onEachFeature,
         pointToLayer: function (feature, latlng) {        
             //For each feature, determine its value for the selected attribute
@@ -98,12 +116,14 @@ function createPropSymbols(response, mymap){
           //  return pointToLayer(feature, latlng);
         //}
     }).addTo(mymap);
+    
+    search(response, mymap, layer);
 }
 
 //calculate the radius of each proportional symbol
 function calcPropRadius(attValue) {
     //scale factor to adjust symbol size evenly
-    var scaleFactor = 3;
+    var scaleFactor = 6;
     //area based on attribute value and scale factor
     //currently showing people/square mile
     var area = attValue * scaleFactor;
@@ -148,11 +168,11 @@ function onEachFeature(feature, layer) {
     popupContent += "<p><b> 2010 Population: </b>" +
         feature.properties[2010] + "</p>";
     
-    var panelContent = "<p><b>Country:</b> " + feature.properties.name + "</p>";
+    var panelContent = "<p><h><b>Annual Populations (in Millions)</b></h></p><p><b>Country:</b> " + feature.properties.name + "</p>";
     if (feature.properties) {
         //loop to add feature property names and values to html string
         for (var property in feature.properties){
-            if (property.startsWith(2)){
+            if (property.startsWith(2) || property.startsWith(1)){
                 panelContent += "<p><b>" + property + ": </b>" + feature.properties[property] + "</p>";            
             };            
         };
@@ -176,6 +196,74 @@ function onEachFeature(feature, layer) {
     });
 };
 
+//tabs
+function openTab(evt, cityName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+function search(data, map, currLayer) {
+        // the search variable
+        var searchControl = new L.Control.Search({
+                layer: currLayer,
+                propertyName: 'name',
+                marker: false,
+                moveToLocation: function(latlng, title, mymap) {
+                    console.log(latlng);
+                    var zoom = 6;
+                    map.setView(latlng, zoom); // access the zoom
+                }
+        });
+
+        //when the search is found
+        searchControl.on('search:locationfound', function(e) {
+            e.layer.setStyle({fillColor: '#B8F6FF', color: '#B8F6FF'});
+                if(e.layer._popup)
+                        e.layer.openPopup();
+                }).on('search:collapsed', function(e) {
+                    currLayer.eachLayer(function(layer) {
+                        currLayer.resetStyle(layer);
+                });
+        });
+             
+        //add the search control to the map
+        map.addControl(searchControl);
+}
+
+function createLegend(map, attributes){
+    var LegendControl = L.Control.extend({
+        options: {
+            position: 'bottomleft'
+        },
+
+        onAdd: function (map) {
+            // create the control container with a particular class name
+            var container = L.DomUtil.create('div', 'legend-control-container');
+
+            //PUT YOUR SCRIPT TO CREATE THE TEMPORAL LEGEND HERE
+
+            return container;
+        }
+    });
+
+    map.addControl(new LegendControl());
+};
 
 //window.onload = initialize();
 $(document).ready(initialize);

@@ -8,32 +8,80 @@ body{
 }
 #mapid{
     float: left;
-    height: 99vh;
-    width: 78%;
-    display: inline-block;
-    padding-bottom: 0px;
+    height: 95%;
+    width: 97.75%;
+    padding: 10px;
+    position: absolute;
+    z-index: -1;
 }
 
-#panel2{
+#panel2, #panel, .tab, .tabcontent, .menu-ui{
     float: right;
-    height: 15vh;
+    clear: right;
+}
+
+
+#panel2{
+    height: 36vh;
     width: 20%;
     padding: 10px;
-    display: inline-block;
     vertical-align: top;
-    background-color: crimson;
+    z-index: 1;
+    background-color: #ccc;
+    text-align: center;
 }
 
 #panel{
-    float: right;
-    height: 80vh;
+
+}
+
+/* Style the tab */
+div.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
     width: 20%;
-    padding: 10px;
-    padding-bottom: 0px;
-    display: inline-block;
-    vertical-align:baseline;
-    background-color: aqua;
-    font: Helvetica;
+    padding: 9px;
+    z-index: 1;
+}
+
+/* Style the links inside the tab */
+div.tab a {
+    float: left;
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 17px;
+    z-index: 1;
+}
+
+/* Change background color of links on hover */
+div.tab a:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+div.tab a:focus, .active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-top: none;
+    z-index: 1;
+    background-color: #f1f1f1;
+    width: 20%;
+    overflow: auto;
+    height: 45vh;
+    line-height: 50%;
+    text-align: left;
+    
 }
 
 .range-slider {
@@ -42,14 +90,15 @@ body{
 
 #forward {
     float: right;
+    background-color: white;
 }
 
 #reverse {
     float: left;
+    background-color: white;
 }
-
-.mydivclass{
-
+#yearIndic{
+    float:none;
 }
 
 .leaflet-popup-content p {

@@ -6,8 +6,9 @@
             <title></title>
 
         <!--put your external stylesheet links here-->
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="lib/leaflet.css">
+        <link rel="stylesheet" href="css/style.css"/>
+        <link rel="stylesheet" href="lib/leaflet.css"/>
+        <link rel="stylesheet" href="lib/leaflet-search.css"/>
 
         <!--[if IE<9]>
             <link rel="stylesheet" href="css/style.ie.css">
@@ -16,11 +17,26 @@
 
     <body>
       <div id="mydiv"></div>
-      <div id="mapid"></div>
-      <div id="panel2"></div>
-      <div id="panel"></div>
-      <script type="text/javascript" src="lib/jquery.js"></script>
-      <script type="text/javascript" src="lib/leaflet-src.js"></script>        
-      <script type="text/javascript" src="js/main.js"></script>
+      <div id="mapid"></div>  
+      <div id="panel2"></div>  
+      <div class="tab">
+        <a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'panel')">Information</a>
+        <a href="javascript:void(0)" class="tablinks" onclick="openTab(event, 'Legend')">Legend</a>
+      </div>
+
+      <div id="panel" class="tabcontent"></div>
+
+      <div id="Legend" class="tabcontent">
+        <h3>Legend</h3>
+        <p>This is where your legend goes.</p>
+      </div>
+          
+        <script type="text/javascript" src="lib/jquery.js"></script>
+        <script type="text/javascript" src="lib/leaflet-src.js"></script>
+        <script src = "lib/leaflet-search.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+
+      </div>
+        
     </body>
 </html>
