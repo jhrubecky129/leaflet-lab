@@ -5,6 +5,7 @@ var mymap = L.map('mapid').setView([0, 0], 3);
 //tile layer
 L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamhydWJlY2t5IiwiYSI6ImNpcnBjemI3NjBmcWhmZ204cTJhcmlkZ28ifQ.shqnrtmNMVCAKQ8ldaFVhg', {
     maxZoom: 10,
+	minZoom: 3,
     }).addTo(mymap);
 
 $('#panel').append('<p><h><b>Annual Populations (Millions)</b></h></p>');
@@ -193,31 +194,23 @@ function onEachFeature(feature, layer) {
             this.closePopup();
         },
         click: function(){
+			openTab();
             $("#panel").html(panelContent);
         }
     });
 };
 
-//tabs
-function openTab(evt, cityName) {
-    // Declare all variables
-    var i, tabcontent, tablinks;
-
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    // Show the current tab, and add an "active" class to the link that opened the tab
-    document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
+function openClose(i,j){
+	tabcontent = document.getElementsByClassName("tabcontent");
+	jQuery(tabcontent[j]).slideUp(100);
+	jQuery(tabcontent[i]).slideToggle(100);
+}
+function openTab(){
+	tabcontent = document.getElementsByClassName("tabcontent");
+	if ($(tabcontent[1]).is(":visible")){
+		jQuery(tabcontent[1]).slideUp(100);
+	}
+	jQuery(tabcontent[0]).slideDown(100);
 }
 
 function search(data, map, currLayer) {
