@@ -7,17 +7,23 @@ body{
 
 }
 #mapid{
-    float: left;
-    height: 95%;
-    width: 97.75%;
-    padding: 10px;
+    height: 100%;
+    width: 100%;
     position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow:hidden;
     z-index: -1;
 }
 
 #panel2, #panel, .tab, .tabcontent, .menu-ui{
     float: right;
     clear: right;
+	position: relative;
+	bottom: -10px;
+	left: -10px;
 }
 
 
@@ -28,6 +34,7 @@ body{
     z-index: 1;
     background-color: #ccc;
     text-align: center;
+	
 }
 
 #panel{
@@ -78,7 +85,7 @@ div.tab a:focus, .active {
     background-color: #f1f1f1;
     width: 350px;
     overflow: auto;
-    height: 45vh;
+    height: 42vh;
     line-height: 50%;
     text-align: left;
     

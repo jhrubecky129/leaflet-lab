@@ -241,75 +241,39 @@ function search(data, map, currLayer) {
         //add the search control to the map
         map.addControl(searchControl);
 }
-function myOwnSearch(data, map, currLayer){
-	tabcontent = document.getElementsByClassName("tabcontent");
-	var searchControl = new L.Control.Search({
-		layer: currLayer,
-		propertyName: 'name',
-		marker: false,
-		moveToLocation: tabcontent[2]
-		/*function(latlng, title, mymap) {
-			console.log(latlng);
-			var zoom = 6;
-			map.setView(latlng, zoom); // access the zoom
-		}*/
-	});	
-	
-}
 
 function createLegend(map, attributes){
     var LegendControl = L.Control.extend({
         options: {
-            position: 'bottomleft'
+			//position: 'bottomright'
         },
 
         onAdd: function (map) {
             // create the control container with a particular class name
-            var container = L.DomUtil.create('div', 'legend-control-container');
+            var container = document.getElementById("Legend");
 
             //add temporal legend div to container
-            //$(container).append('<div id="temporal-legend">')
-
+			$(container).append('<div id="temporal-legend">');
+ 
             //Step 1: start attribute legend svg string
-            var svg = '<svg id="attribute-legend" width="180px" height="180px">';
+			var svg = '<svg id="attribute-legend" width="180px" height="180px">';
 
-            //add attribute legend svg to container
-            $('#Legend').append(svg);
-            
-            //$('#Legend').append('<div id="temporal-legend">')
+			//array of circle names to base loop on
+			var circles = ["max", "mean", "min"];
+				
+			for (var i=0; i<circles.length; i++){
+				//circle string
+				svg += '<circle class="legend-circle" id="' + circles[i] + 
+            '" fill="#F47821" fill-opacity="0.8" stroke="#000000" cx="90"/>';
+			};
 
-            var svg = '<svg id="attribute-legend" width="180px" height="200px">';
+			//close svg string
+			svg += "</svg>";
 
-            var circles = {
-                max: 20,
-                mean: 40,
-                min: 60
-            };
-            
-            circles.style = {
-                fillColor: "#ff7800",
-                color: "#000",
-                weight: 1,
-                opacity: 1,
-                fillOpacity: 0.8
-            }
+			//add attribute legend svg to container
+			$(container).append(svg);
 
-            for (var i=0; i<circles.length; i++){
-                //circle string
-                svg += '<circle class="legend-circle" id="' + circle + '" fill="#75A8B0" fill-opacity="0.8" stroke="#000000" cx="50"/>';
-
-                //text string
-                svg += '<text id="' + circle + '-text" x="100" y="' + circles[circle] + '"></text>';
-            };
-
-            //close svg string
-            svg += "</svg>";
-
-            //add attribute legend svg to container
-            $('#Legend').append(svg);
-
-
-            return '#Legend';
+            //return container;
         }
     });
 
@@ -318,7 +282,7 @@ function createLegend(map, attributes){
 
 function updateLegend(map, attribute){
     //create content for legend
-    var year = attribute.split("_")[1];
+    var year = attribute;
     var content = "Population in " + year;
 
     //replace legend content
