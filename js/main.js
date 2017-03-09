@@ -254,6 +254,7 @@ function createLegend(map, attributes){
 
             //add temporal legend div to container
 			$(container).append('<div id="temporal-legend">');
+			$('#temporal-legend').append("<b>Viewing Population for Year: </b> 1980");
  
             //Step 1: start attribute legend svg string
 			var svg = '<svg id="attribute-legend" width="180px" height="180px">';
