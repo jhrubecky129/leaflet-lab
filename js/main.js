@@ -283,7 +283,7 @@ function createLegend(map, attributes){
 function updateLegend(map, attribute){
     //create content for legend
     var year = attribute;
-    var content = "Population in " + year;
+    var content = "<b>Viewing Population for Year: </b>" + year;
 
     //replace legend content
     $('#temporal-legend').html(content);
