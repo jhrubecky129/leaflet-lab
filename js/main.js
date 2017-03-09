@@ -1,6 +1,7 @@
 /* Stylesheet by Jacob P. Hrubecky, 2017 */
 var mydiv = document.getElementById("mydiv");
 var mymap = L.map('mapid').setView([0, 0], 3);
+var searchTab = document.getElementById("Search");
 
 //tile layer
 L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamhydWJlY2t5IiwiYSI6ImNpcnBjemI3NjBmcWhmZ204cTJhcmlkZ28ifQ.shqnrtmNMVCAKQ8ldaFVhg', {
@@ -200,16 +201,16 @@ function onEachFeature(feature, layer) {
     });
 };
 
-function openClose(i,j){
+function openClose(i,j,k){
 	tabcontent = document.getElementsByClassName("tabcontent");
 	jQuery(tabcontent[j]).slideUp(100);
+	jQuery(tabcontent[k]).slideUp(100);
 	jQuery(tabcontent[i]).slideToggle(100);
 }
 function openTab(){
 	tabcontent = document.getElementsByClassName("tabcontent");
-	if ($(tabcontent[1]).is(":visible")){
-		jQuery(tabcontent[1]).slideUp(100);
-	}
+	jQuery(tabcontent[1]).slideUp(100);
+	jQuery(tabcontent[2]).slideUp(100);
 	jQuery(tabcontent[0]).slideDown(100);
 }
 
@@ -219,7 +220,7 @@ function search(data, map, currLayer) {
                 layer: currLayer,
                 propertyName: 'name',
                 marker: false,
-                moveToLocation: function(latlng, title, mymap) {
+                moveToLocation: function(latlng, title, map) {
                     console.log(latlng);
                     var zoom = 6;
                     map.setView(latlng, zoom); // access the zoom
@@ -239,6 +240,21 @@ function search(data, map, currLayer) {
              
         //add the search control to the map
         map.addControl(searchControl);
+}
+function myOwnSearch(data, map, currLayer){
+	tabcontent = document.getElementsByClassName("tabcontent");
+	var searchControl = new L.Control.Search({
+		layer: currLayer,
+		propertyName: 'name',
+		marker: false,
+		moveToLocation: tabcontent[2]
+		/*function(latlng, title, mymap) {
+			console.log(latlng);
+			var zoom = 6;
+			map.setView(latlng, zoom); // access the zoom
+		}*/
+	});	
+	
 }
 
 function createLegend(map, attributes){

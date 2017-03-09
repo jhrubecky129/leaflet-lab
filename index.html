@@ -20,14 +20,18 @@
       <div id="mapid"></div>  
       <div id="panel2"></div>  
       <div class="tab">
-        <a href="javascript:void(0)" class="tablinks" onclick="openClose(0,1)">Information</a>
-        <a href="javascript:void(0)" class="tablinks" onclick="openClose(1,0)">Legend</a>
+        <a href="javascript:void(0)" class="tablinks" onclick="openClose(0,1,2)">Information</a>
+        <a href="javascript:void(0)" class="tablinks" onclick="openClose(1,0,2)">Legend</a>
+		<a href="javascript:void(0)" class="tablinks" onclick="openClose(2,0,1)">Search</a>
       </div>
 
       <div id="panel" class="tabcontent"></div>
       <div id="Legend" class="tabcontent">
         <h3>Legend</h3>
       </div>
+	  <div id="Search" class="tabcontent">
+		
+	  </div>
           
         <script type="text/javascript" src="lib/jquery.js"></script>
         <script type="text/javascript" src="lib/leaflet-src.js"></script>
